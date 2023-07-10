@@ -1,0 +1,38 @@
+{
+  "name": "@buildwithsygma/sygma-sdk",
+  "description": "Sygma Maintenance",
+  "main": "index.js",
+  "private": true,
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sygmaprotocol/maintenance-utils"
+  },
+  "packageManager": "yarn@3.6.1",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build:cjs": "tsc -p tsconfig.cjs.json && echo '{\"type\": \"commonjs\"}' > ./dist-cjs/package.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "build:all": "yarn build:cjs && yarn build:types",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "yarn run lint --fix",
+    "clean": "rm -rf ./dist ./dist-cjs ./dist-esm ./types"
+  },
+  "keywords": [],
+  "author": "Sygma Protocol Product Team",
+  "license": "LGPL-3.0-or-later",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "commander": "^11.0.0",
+    "ethers": "^6.6.2"
+  },
+  "devDependencies": {
+    "@buildwithsygma/sygma-sdk-core": "^2.1.0",
+    "typescript": "^5.1.6"
+  },
+  "resolutions": {
+    "typescript": "^5.0.4"
+  }
+}
