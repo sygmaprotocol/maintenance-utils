@@ -1,7 +1,7 @@
 import {ethers} from 'ethers';
 import {chainIdToRpc, bridgeAbi} from "./constants";
 
-export async function getWalletsForDifferentProviders(privateKey: string, networks: any) {
+export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<any>) {
   const wallets = [];
   for (let i = 0; i < networks.length; i++) {
     const network = networks[i];
@@ -16,7 +16,7 @@ export async function getWalletsForDifferentProviders(privateKey: string, networ
   return wallets;
 }
 
-export async function deriveWalletsFromMnemonic(mnemonic: string, networks: any) {
+export async function deriveWalletsFromMnemonic(mnemonic: string, networks: Array<any>) {
   const wallets = [];
   for (let i = 0; i < networks.length; i++) {
     const network = networks[i];
@@ -31,7 +31,7 @@ export async function deriveWalletsFromMnemonic(mnemonic: string, networks: any)
   return wallets;
 }
 
-export async function sendPauseTransactions(networks: any, wallets: any) {
+export async function sendPauseTransactions(networks: Array<any>, wallets: Array<ethers.Wallet>) {
     const receipts = [];
     for (let i = 0; i < networks.length; i++) {
         const network = networks[i];

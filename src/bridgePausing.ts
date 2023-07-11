@@ -2,6 +2,7 @@ import axios from 'axios';
 import {Command, Option} from 'commander';
 import {ConfigUrl} from "./constants";
 import {getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions} from "./utils";
+import {HDNodeVoidWallet, ethers} from 'ethers';
 
 const program = new Command();
 
@@ -33,7 +34,7 @@ program
       const response = await axios.get(ConfigUrl[network]) as any;
       const networks = response.data.domains.filter((network: any) => network.type === "evm"); // just evms for now
 
-      let wallets: any = [];
+      let wallets: Array<ethers.Wallet> = [];
 
       if (mnemonic) {
         wallets = await deriveWalletsFromMnemonic(mnemonic, networks);
