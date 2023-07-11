@@ -18,7 +18,8 @@
     "build:all": "yarn build:cjs && yarn build:types",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "yarn run lint --fix",
-    "clean": "rm -rf ./dist ./dist-cjs ./dist-esm ./types"
+    "clean": "rm -rf ./dist ./dist-cjs ./dist-esm ./types",
+    "build-and-test": "yarn run build:all && node ./dist-cjs/bridgePausing.js pause 95be8d0ee6436056dbabfdb2da70585a7baf23ceca320304a600c94e67f507f5 testnet"
   },
   "keywords": [],
   "author": "Sygma Protocol Product Team",
