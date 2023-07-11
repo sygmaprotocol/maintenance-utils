@@ -9,7 +9,3 @@ export const chainIdToRpc = {
   5: "https://goerli.infura.io/v3/"
 }
 
-export const bridgeAbi = [
-
-]
-

@@ -1,5 +1,6 @@
 import {ethers} from 'ethers';
-import {chainIdToRpc, bridgeAbi} from "./constants";
+import {chainIdToRpc} from "./constants";
+import {bridgeAbi} from "../abis/bridgeAbi";
 
 export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<any>) {
   const wallets = [];
@@ -37,7 +38,7 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
         const network = networks[i];
         const wallet = wallets[i];
         const bridge = await getBridgeContractInstance(network, wallet)
-        const tx = await bridge.pause();
+        const tx = await bridge.adminPauseTransfers();
         const receipt = await tx.wait();
         console.log(`Transaction no. ${i+1} completed, bridge on ${network.name} paused`);
         receipts.push(receipt);

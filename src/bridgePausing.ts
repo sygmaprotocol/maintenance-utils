@@ -2,7 +2,6 @@ import axios from 'axios';
 import {Command, Option} from 'commander';
 import {ConfigUrl} from "./constants";
 import {getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions} from "./utils";
-import {ethers} from 'ethers';
 
 const program = new Command();
 
