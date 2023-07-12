@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import axios from 'axios';
-import {ethers} from 'ethers';
-import {Command, Option} from 'commander';
-import {ConfigUrl} from "./constants";
-import {getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions} from "./utils";
-import {RawConfig, Domain} from '@buildwithsygma/sygma-sdk-core';
+import { ethers } from 'ethers';
+import { Command, Option } from 'commander';
+import { SharedConfig } from "./constants";
+import { getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions } from "./utils";
+import { RawConfig, Domain } from '@buildwithsygma/sygma-sdk-core';
 
 const program = new Command();
 
@@ -26,7 +27,7 @@ program
   )
   .action(async (configs: any) => {
     try {
-      const network: keyof typeof ConfigUrl = configs.environment;
+      const network: keyof typeof SharedConfig = configs.environment;
       const {
         privateKey,
         mnemonic
@@ -34,9 +35,8 @@ program
 
       const {
         data
-      } = await axios.get(ConfigUrl[network]) as unknown as {data: RawConfig};
-      
-      
+      } = await axios.get(SharedConfig[network]) as unknown as { data: RawConfig };
+
       const networks: Array<Domain> = data.domains.filter((network: Domain) => network.name === "ethereum"); // just evms for now
 
       let wallets: Array<ethers.Wallet | ethers.HDNodeWallet> = [];
@@ -50,7 +50,7 @@ program
       }
 
       await sendPauseTransactions(networks, wallets);
-      
+
     } catch (err) {
       if (err instanceof Error) {
         throw new Error(`Failed to fetch shared config because of: ${err.message}`);

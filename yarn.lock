@@ -165,6 +165,7 @@ __metadata:
     "@buildwithsygma/sygma-sdk-core": ^2.1.0
     axios: ^1.4.0
     commander: ^11.0.0
+    dotenv: ^16.3.1
     ethers: ^6.6.2
     typescript: ^5.1.6
   languageName: unknown
@@ -3002,6 +3003,13 @@ __metadata:
   version: 0.1.2
   resolution: "dom-walk@npm:0.1.2"
   checksum: 4d2ad9062a9423d890f8577aa202b597a6b85f9489bdde656b9443901b8b322b289655c3affefc58ec2e41931e0828dfee0a1d2db6829a607d76def5901fc5a9
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
   languageName: node
   linkType: hard
 
