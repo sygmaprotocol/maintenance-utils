@@ -1,6 +1,6 @@
 import {ethers} from 'ethers';
 import {chainIdToRpc} from "./constants";
-import {bridgeAbi} from "../abis/bridgeAbi";
+import {Bridge__factory} from "@buildwithsygma/sygma-contracts";
 
 export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<any>) {
   const wallets = [];
@@ -32,21 +32,15 @@ export async function deriveWalletsFromMnemonic(mnemonic: string, networks: Arra
   return wallets;
 }
 
-export async function sendPauseTransactions(networks: Array<any>, wallets: Array<ethers.Wallet>) {
+export async function sendPauseTransactions(networks: Array<any>, wallets: Array<ethers.Wallet | ethers.HDNodeWallet>) {
     const receipts = [];
     for (let i = 0; i < networks.length; i++) {
         const network = networks[i];
         const wallet = wallets[i];
-        const bridge = await getBridgeContractInstance(network, wallet)
+        const bridge = Bridge__factory.connect(network.bridge, wallet);
         const tx = await bridge.adminPauseTransfers();
-        const receipt = await tx.wait();
         console.log(`Transaction no. ${i+1} completed, bridge on ${network.name} paused`);
-        receipts.push(receipt);
+        receipts.push(tx);
     }
     return receipts;
-}
-
-async function getBridgeContractInstance(network: any, wallet: ethers.Wallet) {
-    const bridge = new ethers.Contract(network.bridge, bridgeAbi, wallet);
-    return bridge;
 }

@@ -1,7 +1,9 @@
 import axios from 'axios';
+import {ethers} from 'ethers';
 import {Command, Option} from 'commander';
 import {ConfigUrl} from "./constants";
 import {getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions} from "./utils";
+import {RawConfig, Domain} from '@buildwithsygma/sygma-sdk-core';
 
 const program = new Command();
 
@@ -30,10 +32,14 @@ program
         mnemonic
       } = configs;
 
-      const response = await axios.get(ConfigUrl[network]) as any;
-      const networks = response.data.domains.filter((network: any) => network.type === "evm"); // just evms for now
+      const {
+        data
+      } = await axios.get(ConfigUrl[network]) as unknown as {data: RawConfig};
+      
+      
+      const networks = data.domains.filter((network: Domain) => network.name === "ethereum"); // just evms for now
 
-      let wallets: Array<any> = [];
+      let wallets: Array<ethers.Wallet | ethers.HDNodeWallet> = [];
 
       if (mnemonic) {
         wallets = await deriveWalletsFromMnemonic(mnemonic, networks);
