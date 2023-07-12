@@ -1,13 +1,14 @@
 import {ethers} from 'ethers';
 import {chainIdToRpc} from "./constants";
 import {Bridge__factory} from "@buildwithsygma/sygma-contracts";
+import {Domain} from "@buildwithsygma/sygma-sdk-core";
 
-export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<any>) {
+export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<Domain>) {
   const wallets = [];
   for (let i = 0; i < networks.length; i++) {
     const network = networks[i];
-    const chainId: keyof typeof chainIdToRpc = network.chainId;
-    const rpc = chainIdToRpc[chainId];
+    const chainId = network.chainId;
+    const rpc = chainIdToRpc[chainId as keyof typeof chainIdToRpc];
     if (rpc) {
         const provider = new ethers.JsonRpcProvider(rpc);
         const wallet = new ethers.Wallet(privateKey, provider); // add error handling for invalid private key
@@ -17,12 +18,12 @@ export async function getWalletsForDifferentProviders(privateKey: string, networ
   return wallets;
 }
 
-export async function deriveWalletsFromMnemonic(mnemonic: string, networks: Array<any>) {
+export async function deriveWalletsFromMnemonic(mnemonic: string, networks: Array<Domain>) {
   const wallets = [];
   for (let i = 0; i < networks.length; i++) {
     const network = networks[i];
-    const chainId: keyof typeof chainIdToRpc = network.chainId;
-    const rpc = chainIdToRpc[chainId];
+    const chainId = network.chainId;
+    const rpc = chainIdToRpc[chainId as keyof typeof chainIdToRpc];
     if (rpc) {
         const provider = new ethers.JsonRpcProvider(rpc);
         const wallet = ethers.Wallet.fromPhrase(mnemonic, provider);

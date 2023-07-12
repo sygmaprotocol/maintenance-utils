@@ -37,7 +37,7 @@ program
       } = await axios.get(ConfigUrl[network]) as unknown as {data: RawConfig};
       
       
-      const networks = data.domains.filter((network: Domain) => network.name === "ethereum"); // just evms for now
+      const networks: Array<Domain> = data.domains.filter((network: Domain) => network.name === "ethereum"); // just evms for now
 
       let wallets: Array<ethers.Wallet | ethers.HDNodeWallet> = [];
 
