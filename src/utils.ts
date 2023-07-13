@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { TransactionReceipt, ethers } from 'ethers';
 import { chainIdToRpc } from "./constants";
 import { Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from "@buildwithsygma/sygma-sdk-core";
@@ -46,12 +46,16 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
   return receipts;
 } 
 
-export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
-  const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
-  const provider = new ethers.AbstractProvider(rpc)
+export async function getTransactionInfo(domain: any, depositHash: string) {
 
-  let transactionReceipt = await provider.getTransactionReceipt(depositHash)
+  const rpc = chainIdToRpc[domain.chainId as keyof typeof chainIdToRpc];
+  const provider = new ethers.JsonRpcProvider(rpc)
+
+  let transactionReceipt = await provider.getTransactionReceipt(depositHash);
   
+  console.log(transactionReceipt)
+
+  process.exit(1);
   //let abc = object?.logs
   //const filters: any = bridge.filters.
 

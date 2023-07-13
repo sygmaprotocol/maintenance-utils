@@ -31,6 +31,7 @@
   "devDependencies": {
     "@buildwithsygma/sygma-contracts": "^2.3.0",
     "@buildwithsygma/sygma-sdk-core": "^2.1.0",
+    "dotenv": "^16.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
