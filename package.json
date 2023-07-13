@@ -15,7 +15,7 @@
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json && echo '{\"type\": \"commonjs\"}' > ./dist-cjs/package.json",
     "build:types": "tsc -p tsconfig.types.json",
-    "build:all": "yarn build:cjs && yarn build:types",
+    "build:all": "yarn run clean && yarn build:cjs && yarn build:types",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "yarn run lint --fix",
     "clean": "rm -rf ./dist ./dist-cjs ./dist-esm ./types"
