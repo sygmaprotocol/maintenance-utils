@@ -44,4 +44,18 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
     receipts.push(tx);
   }
   return receipts;
+} 
+
+export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
+  const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
+  const provider = new ethers.AbstractProvider(rpc)
+
+  let transactionReceipt = await provider.getTransactionReceipt(depositHash)
+  
+  //let abc = object?.logs
+  //const filters: any = bridge.filters.
+
+  //bridge.queryFilter()
+
+  
 }
