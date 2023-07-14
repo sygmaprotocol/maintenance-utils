@@ -78,6 +78,31 @@ export function convertHexToString(hex: string) {
   return str;
 }   
 
+export function printEventData(emittedEvent: DepositEvent, possibleEvents: string[]){
+  switch (emittedEvent.event?.toLowerCase()){
+    case possibleEvents[0]: 
+      console.log(`Transaction was successful.
+      event: ${emittedEvent.event}
+      destinationDomainID: ${emittedEvent.args[0]}
+      depositNonce: ${emittedEvent.args[2]}`)
+      break; 
+    case possibleEvents[1]:
+      console.log(`Transaction was successful.
+      event: ${emittedEvent.event}
+      originDomainID: ${emittedEvent.args[0]}
+      depositNonce: ${emittedEvent.args[1]}`)
+      break;
+    case possibleEvents[2]:
+      console.log(`Transaction wasn't successful
+      event: ${emittedEvent.event}
+      lowLevelData: ${convertHexToString(emittedEvent.args[0].toString().substring(10))}
+      originDomainID: ${emittedEvent.args[1]}`)
+      break;
+    default:
+      console.log("Unknown event")
+  }
+}
+
 export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
@@ -103,25 +128,5 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
     throw new Error("Error while fetching event data")
   }
 
-  if (events[0].event?.toLowerCase() == possibleEvents[0]){
-    console.log(`Transaction was successful.
-    event: ${events[0].event}
-    destinationDomainID: ${events[0].args[0]}
-    depositNonce: ${events[0].args[2]}`)
-  } else if (events[0].event?.toLowerCase() == possibleEvents[1]){
-    console.log(`Transaction was successful.
-    event: ${events[0].event}
-    originDomainID: ${events[0].args[0]}
-    depositNonce: ${events[0].args[1]}`)
-  } else if (events[0].event?.toLowerCase() == possibleEvents[2]) {
-    
-    //console.log(utils.parseBytes32String(events[0].args[0].toString()))
-    console.log(convertHexToString(events[0].args[0].toString().substring(10)))
-    console.log(`Transaction wasn't successful
-    event: ${events[0].event}
-    lowLevelData: ${events[0].args[0]}
-    originDomainID: ${events[0].args[1]}`)
-  } else {
-    console.log("Unknown event.")
-  }
+  printEventData(events[0], possibleEvents);
 }
