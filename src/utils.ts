@@ -1,4 +1,4 @@
-import { providers, Wallet } from 'ethers';
+import { providers, Wallet} from 'ethers';
 import { chainIdToRpc } from "./constants";
 import { Bridge, Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from '@buildwithsygma/sygma-sdk-core';
@@ -64,9 +64,19 @@ export async function getEvents(bridge: Bridge, transactionReceipt: providers.Tr
     default: 
       throw new Error("Wrong event name")
   }
-  const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber)
-  return events
+
+  const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber);
+  return events;
 }
+
+export function convertHexToString(hex: string) {
+  var str = '';
+  for (var i = 2; i < hex.length; i += 2) {
+      var v = parseInt(hex.substring(i-2, i), 16);
+      if (v) str += String.fromCharCode(v);
+  }
+  return str;
+}   
 
 export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
@@ -81,32 +91,37 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
 
   let events: DepositEvent[] = []
   const possibleEvents: string[] = ["deposit", "proposalexecution", "failedhandlerexecution"]
-   for (let eventName of possibleEvents){
+  
+  for (let eventName of possibleEvents){
     events = await getEvents(bridge, transactionReceipt, eventName)
     if (events.length != 0){
       break; 
     }
   }
+
   if (events.length == 0){
     throw new Error("Error while fetching event data")
   }
-  
-  if (transactionReceipt.status == 1 && events[0].event?.toLowerCase() == possibleEvents[0]){
+
+  if (events[0].event?.toLowerCase() == possibleEvents[0]){
     console.log(`Transaction was successful.
     event: ${events[0].event}
     destinationDomainID: ${events[0].args[0]}
     depositNonce: ${events[0].args[2]}`)
-  } else if (transactionReceipt.status == 1 && events[0].event?.toLowerCase() == possibleEvents[1]){
+  } else if (events[0].event?.toLowerCase() == possibleEvents[1]){
     console.log(`Transaction was successful.
     event: ${events[0].event}
     originDomainID: ${events[0].args[0]}
     depositNonce: ${events[0].args[1]}`)
-  } else if (transactionReceipt.status == 0 && events[0].event?.toLowerCase() == possibleEvents[2]) {
+  } else if (events[0].event?.toLowerCase() == possibleEvents[2]) {
+    
+    //console.log(utils.parseBytes32String(events[0].args[0].toString()))
+    console.log(convertHexToString(events[0].args[0].toString().substring(10)))
     console.log(`Transaction wasn't successful
     event: ${events[0].event}
     lowLevelData: ${events[0].args[0]}
     originDomainID: ${events[0].args[1]}`)
   } else {
-    console.log("Unkown event.")
+    console.log("Unknown event.")
   }
 }
