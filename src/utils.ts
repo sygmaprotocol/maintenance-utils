@@ -1,6 +1,6 @@
 import { providers, Wallet } from 'ethers';
 import { chainIdToRpc } from "./constants";
-import { Bridge__factory } from "@buildwithsygma/sygma-contracts";
+import { Bridge, Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from '@buildwithsygma/sygma-sdk-core';
 
 
@@ -47,18 +47,40 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
   return receipts;
 } 
 
+export async function getEvents(bridge: Bridge, transactionReceipt: providers.TransactionReceipt, eventName: string){
+  let filter; 
+
+  switch (eventName.toLowerCase()){
+    case "deposit": 
+      filter = bridge.filters.Deposit(null, null, null, null, null, null);
+      break;
+    case "proposalexecution":
+      filter = bridge.filters.ProposalExecution(null, null, null, null);
+      break;
+    case "failedhandlerexecution":
+      filter = bridge.filters.FailedHandlerExecution(null,null,null)
+      break;
+    default: 
+      throw new Error("Wrong event name")
+  }
+  const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber)
+  return events
+}
+
 export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
   const transactionReceipt = await provider.getTransactionReceipt(depositHash);
-  //console.log(networks[0].bridge)
   const bridge = Bridge__factory.connect(networks[0].bridge, provider);
-  //console.log(bridge)
-  const filter = bridge.filters.Deposit(null, null, null, null, null, null)
-  const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber)
 
-  console.log(events)
-  /*if (transactionReceipt?.status == 1){
+  for (let eventName of ["deposit", "proposalexecution", "failedhandlerexecution"]){
+    let events = await getEvents(bridge, transactionReceipt, eventName)
+    if (events.length != 0){
+      break; 
+    }
+  }
+
+  if (transactionReceipt?.status == 1){
     console.log("Transaction was successful.")
   } else if (transactionReceipt?.status == 0){
     for (let log of transactionReceipt.logs){
@@ -69,5 +91,5 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
   }
   for (let log of transactionReceipt.logs){
     console.log(log) 
-  }*/
+  }
 }
