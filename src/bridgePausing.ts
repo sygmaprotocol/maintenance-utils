@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import axios from 'axios';
-import { ethers } from 'ethers';
 import { Command, Option } from 'commander';
+import { Wallet } from 'ethers';
 import { SharedConfig } from "./constants";
 import { getWalletsForDifferentProviders, deriveWalletsFromMnemonic, sendPauseTransactions } from "./utils";
 import { RawConfig, Domain } from '@buildwithsygma/sygma-sdk-core';
@@ -39,7 +39,7 @@ program
 
       const networks: Array<Domain> = data.domains.filter((network: Domain) => network.name === "ethereum"); // just evms for now
 
-      let wallets: Array<ethers.Wallet | ethers.HDNodeWallet> = [];
+      let wallets: Array<Wallet | any> = [];
 
       if (mnemonic) {
         wallets = await deriveWalletsFromMnemonic(mnemonic, networks);
