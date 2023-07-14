@@ -27,12 +27,9 @@ program
             } = await axios.get(SharedConfig[network]) as unknown as { data: RawConfig };
             
             const networks = data.domains.filter((domain: Domain) => 
-            domain.name === "ethereum" 
-            && domain.chainId == configs.chainId)
-            if (!data.domains.filter((domain: Domain) => 
-                    domain.name === "ethereum" 
-                    && domain.chainId == configs.chainId)
-            ){
+                domain.name === "ethereum" 
+                && domain.chainId == configs.chainId)
+            if (!networks){
                 throw new Error("Chain doesn't exist")
             }
 

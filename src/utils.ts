@@ -2,6 +2,7 @@ import { providers, Wallet } from 'ethers';
 import { chainIdToRpc } from "./constants";
 import { Bridge, Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from '@buildwithsygma/sygma-sdk-core';
+import { DepositEvent } from '@buildwithsygma/sygma-contracts/dist/ethers/Bridge';
 
 
 export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<Domain>) {
@@ -70,26 +71,42 @@ export async function getEvents(bridge: Bridge, transactionReceipt: providers.Tr
 export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
+
   const transactionReceipt = await provider.getTransactionReceipt(depositHash);
+  if (!transactionReceipt){
+    throw new Error("Error while getting transaction receipt using deposit hash.")
+  }
+
   const bridge = Bridge__factory.connect(networks[0].bridge, provider);
 
-  for (let eventName of ["deposit", "proposalexecution", "failedhandlerexecution"]){
-    let events = await getEvents(bridge, transactionReceipt, eventName)
+  let events: DepositEvent[] = []
+  const possibleEvents: string[] = ["deposit", "proposalexecution", "failedhandlerexecution"]
+   for (let eventName of possibleEvents){
+    events = await getEvents(bridge, transactionReceipt, eventName)
     if (events.length != 0){
       break; 
     }
   }
-
-  if (transactionReceipt?.status == 1){
-    console.log("Transaction was successful.")
-  } else if (transactionReceipt?.status == 0){
-    for (let log of transactionReceipt.logs){
-      console.log(log) 
-    }
-  } else {
-    throw new Error("Error while getting transaction receipt using deposit hash.")
+  if (events.length == 0){
+    throw new Error("Error while fetching event data")
   }
-  for (let log of transactionReceipt.logs){
-    console.log(log) 
+  
+  if (transactionReceipt.status == 1 && events[0].event?.toLowerCase() == possibleEvents[0]){
+    console.log(`Transaction was successful.
+    event: ${events[0].event}
+    destinationDomainID: ${events[0].args[0]}
+    depositNonce: ${events[0].args[2]}`)
+  } else if (transactionReceipt.status == 1 && events[0].event?.toLowerCase() == possibleEvents[1]){
+    console.log(`Transaction was successful.
+    event: ${events[0].event}
+    originDomainID: ${events[0].args[0]}
+    depositNonce: ${events[0].args[1]}`)
+  } else if (transactionReceipt.status == 0 && events[0].event?.toLowerCase() == possibleEvents[2]) {
+    console.log(`Transaction wasn't successful
+    event: ${events[0].event}
+    lowLevelData: ${events[0].args[0]}
+    originDomainID: ${events[0].args[1]}`)
+  } else {
+    console.log("Unkown event.")
   }
 }
