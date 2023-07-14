@@ -1,4 +1,4 @@
-import { TransactionReceipt, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { chainIdToRpc } from "./constants";
 import { Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from "@buildwithsygma/sygma-sdk-core";
@@ -46,20 +46,19 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
   return receipts;
 } 
 
-export async function getTransactionInfo(domain: any, depositHash: string) {
-
-  const rpc = chainIdToRpc[domain.chainId as keyof typeof chainIdToRpc];
+export async function getTransactionInfo(depositHash: string, chainId: number) {
+  const rpc = chainIdToRpc[chainId as keyof typeof chainIdToRpc];
   const provider = new ethers.JsonRpcProvider(rpc)
+  const transactionReceipt = await provider.getTransactionReceipt(depositHash);
 
-  let transactionReceipt = await provider.getTransactionReceipt(depositHash);
-  
-  console.log(transactionReceipt)
-
-  process.exit(1);
-  //let abc = object?.logs
-  //const filters: any = bridge.filters.
-
-  //bridge.queryFilter()
-
+  if (transactionReceipt?.status == 1){
+    console.log("Transaction was successful.")
+  } else if (transactionReceipt?.status == 0){
+    for (let log of transactionReceipt.logs){
+      console.log(log) 
+    }
+  } else {
+    throw new Error("Error while getting transaction receipt using deposit hash.")
+  }
   
 }
