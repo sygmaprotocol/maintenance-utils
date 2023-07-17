@@ -1,7 +1,7 @@
 import { providers, Wallet} from 'ethers';
 import { chainIdToRpc } from "./constants";
 import { Bridge, Bridge__factory } from "@buildwithsygma/sygma-contracts";
-import { Domain } from '@buildwithsygma/sygma-sdk-core';
+import { Domain, EthereumConfig, SubstrateConfig } from '@buildwithsygma/sygma-sdk-core';
 import { DepositEvent } from '@buildwithsygma/sygma-contracts/dist/ethers/Bridge';
 import { possibleEvents } from './constants';
 
@@ -63,7 +63,7 @@ export async function getEvent(bridge: Bridge, transactionReceipt: providers.Tra
       filter = bridge.filters.FailedHandlerExecution(null,null,null)
       break;
     default: 
-      throw new Error("Wrong event name")
+      throw new Error("Wrong event name in possibleEvents array")
   }
 
   const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber);
@@ -99,22 +99,24 @@ export function printEventData(emittedEvent: DepositEvent){
       lowLevelData: ${convertHexToString(emittedEvent.args[0].toString().substring(10))}
       originDomainID: ${emittedEvent.args[1]}`)
       break;
-    default:
-      console.log("Unknown event")
   }
 }
 
-export async function getTransactionInfo(networks: Array<any>, transactionHash: string) {
+export async function getTransactionInfo(network: EthereumConfig | SubstrateConfig, transactionHash: string) {
 
-  const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
+  const rpc = chainIdToRpc[network.chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
 
   const transactionReceipt = await provider.getTransactionReceipt(transactionHash);
   if (!transactionReceipt){
     throw new Error("Error while getting transaction receipt using hash.")
   }
+  if (transactionReceipt.status == 0){
+    console.log("Transaction failed")
+    process.exit(0)
+  }
 
-  const bridge = Bridge__factory.connect(networks[0].bridge, provider);
+  const bridge = Bridge__factory.connect(network.bridge, provider);
 
   let event: any; 
   
@@ -124,10 +126,11 @@ export async function getTransactionInfo(networks: Array<any>, transactionHash: 
       break; 
     }
   }
-
+  
   if (event == undefined){
-    throw new Error("Error while fetching event data")
+    console.log("Unreckognized event emitted")
+  } else {
+    printEventData(event);
   }
 
-  printEventData(event);
 }

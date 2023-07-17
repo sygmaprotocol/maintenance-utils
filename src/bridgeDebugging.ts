@@ -33,7 +33,7 @@ program
                 throw new Error("Chain doesn't exist")
             }
 
-            await getTransactionInfo(networks, configs.transactionHash)
+            await getTransactionInfo(networks[0], configs.transactionHash)
 
         } catch (err) {
             if (err instanceof Error) {
