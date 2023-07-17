@@ -17,7 +17,12 @@ program
     .requiredOption(
         "-txn, --transaction-hash <transactionHash>", "Transaction which to retry"
     )
-    .requiredOption("-cid, --chain-id <chainId>", "Chain on which to retry the transaction")
+    .requiredOption(
+        "-cid, --chain-id <chainId>", "Chain on which to retry the transaction"
+    )
+    .requiredOption(
+        "-pk, --private-key <privateKey>', 'Private key to use for signing transactions"
+    )
     .action(async(configs: any) => {
         try {
             const network: keyof typeof SharedConfig = configs.environment; 
@@ -32,7 +37,7 @@ program
                 throw new Error("Chain doesn't exist")
             }
 
-            await retryTransaction(networks[0], configs.transactionHash)
+            await retryTransaction(networks[0], configs.transactionHash, configs.privateKey)
 
         } catch (err) {
             if (err instanceof Error) {
