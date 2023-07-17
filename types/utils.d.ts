@@ -9,4 +9,5 @@ export declare function getEvent(bridge: Bridge, transactionReceipt: providers.T
 export declare function convertHexToString(hex: string): string;
 export declare function printEventData(emittedEvent: DepositEvent): void;
 export declare function getTransactionInfo(network: EthereumConfig | SubstrateConfig, transactionHash: string): Promise<void>;
+export declare function retryTransaction(network: EthereumConfig | SubstrateConfig, transactionHash: string, privateKey: string): Promise<void>;
 //# sourceMappingURL=utils.d.ts.map

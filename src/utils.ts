@@ -135,13 +135,16 @@ export async function getTransactionInfo(network: EthereumConfig | SubstrateConf
 
 }
 
-export async function retryTransaction(network: EthereumConfig | SubstrateConfig, transactionHash: string) {
+export async function retryTransaction(network: EthereumConfig | SubstrateConfig, transactionHash: string, privateKey: string) {
 
   const rpc = chainIdToRpc[network.chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
+  const signer = new Wallet(privateKey, provider)
 
-  const bridge = Bridge__factory.connect(network.bridge, provider);
+  const bridge = Bridge__factory.connect(network.bridge, signer);
 
-  bridge.retry(transactionHash);
+  bridge.retry(transactionHash, {gasLimit: 500000});
+
+  console.log(`Function with transaction hash ${transactionHash} retried on bridge ${bridge.address}`);
 
 }
