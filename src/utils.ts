@@ -134,3 +134,14 @@ export async function getTransactionInfo(network: EthereumConfig | SubstrateConf
   }
 
 }
+
+export async function retryTransaction(network: EthereumConfig | SubstrateConfig, transactionHash: string) {
+
+  const rpc = chainIdToRpc[network.chainId as keyof typeof chainIdToRpc];
+  const provider = new providers.JsonRpcProvider(rpc)
+
+  const bridge = Bridge__factory.connect(network.bridge, provider);
+
+  bridge.retry(transactionHash);
+
+}
