@@ -109,7 +109,7 @@ export async function getTransactionInfo(network: EthereumConfig | SubstrateConf
 
   const transactionReceipt = await provider.getTransactionReceipt(transactionHash);
   if (!transactionReceipt){
-    throw new Error("Error while getting transaction receipt using hash.")
+    throw new Error("Error while getting transaction receipt using transaction hash.")
   }
   if (transactionReceipt.status == 0){
     console.log("Transaction failed")
@@ -128,7 +128,7 @@ export async function getTransactionInfo(network: EthereumConfig | SubstrateConf
   }
   
   if (event == undefined){
-    console.log("Unreckognized event emitted")
+    console.log("Unrecognized event emitted")
   } else {
     printEventData(event);
   }
