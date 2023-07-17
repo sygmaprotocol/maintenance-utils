@@ -8,7 +8,7 @@ import { getTransactionInfo } from './utils';
 const program = new Command();
 
 program
-    .name("debug-bridge")
+    .name("debug")
     .description("Enables quick debugging of specific Sygma messages (bridging request)")
     .requiredOption(
         "-e, --environment <environment>", "Environment on which to debug"
