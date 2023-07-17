@@ -3,6 +3,7 @@ import { chainIdToRpc } from "./constants";
 import { Bridge, Bridge__factory } from "@buildwithsygma/sygma-contracts";
 import { Domain } from '@buildwithsygma/sygma-sdk-core';
 import { DepositEvent } from '@buildwithsygma/sygma-contracts/dist/ethers/Bridge';
+import { possibleEvents } from './constants';
 
 
 export async function getWalletsForDifferentProviders(privateKey: string, networks: Array<Domain>) {
@@ -78,7 +79,7 @@ export function convertHexToString(hex: string) {
   return str;
 }   
 
-export function printEventData(emittedEvent: DepositEvent, possibleEvents: string[]){
+export function printEventData(emittedEvent: DepositEvent){
   switch (emittedEvent.event?.toLowerCase()){
     case possibleEvents[0]: 
       console.log(`Transaction was successful.
@@ -104,6 +105,7 @@ export function printEventData(emittedEvent: DepositEvent, possibleEvents: strin
 }
 
 export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
+
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
 
@@ -115,7 +117,6 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
   const bridge = Bridge__factory.connect(networks[0].bridge, provider);
 
   let events: DepositEvent[] = []
-  const possibleEvents: string[] = ["deposit", "proposalexecution", "failedhandlerexecution"]
   
   for (let eventName of possibleEvents){
     events = await getEvents(bridge, transactionReceipt, eventName)
@@ -128,5 +129,5 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
     throw new Error("Error while fetching event data")
   }
 
-  printEventData(events[0], possibleEvents);
+  printEventData(events[0]);
 }

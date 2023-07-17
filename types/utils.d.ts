@@ -7,6 +7,6 @@ export declare function deriveWalletsFromMnemonic(mnemonic: string, networks: Ar
 export declare function sendPauseTransactions(networks: Array<any>, wallets: Array<Wallet | any>): Promise<import("ethers").ContractTransaction[]>;
 export declare function getEvents(bridge: Bridge, transactionReceipt: providers.TransactionReceipt, eventName: string): Promise<DepositEvent[]>;
 export declare function convertHexToString(hex: string): string;
-export declare function printEventData(emittedEvent: DepositEvent, possibleEvents: string[]): void;
+export declare function printEventData(emittedEvent: DepositEvent): void;
 export declare function getTransactionInfo(networks: Array<any>, depositHash: string): Promise<void>;
 //# sourceMappingURL=utils.d.ts.map
