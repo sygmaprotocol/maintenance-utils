@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Command } from 'commander';
 import { SharedConfig } from "./constants";
 import { RawConfig, Domain } from '@buildwithsygma/sygma-sdk-core';
-import { getTransactionInfo } from './utils';
+import { retryTransaction } from './utils';
 
 
 const program = new Command();
@@ -17,9 +17,22 @@ program
     .requiredOption(
         "-txn, --transaction-hash <transactionHash>", "Transaction which to retry"
     )
+    .requiredOption("-cid, --chain-id <chainId>", "Chain on which to retry the transaction")
     .action(async(configs: any) => {
         try {
+            const network: keyof typeof SharedConfig = configs.environment; 
+            const {
+                data
+            } = await axios.get(SharedConfig[network]) as unknown as { data: RawConfig };
             
+            const networks = data.domains.filter((domain: Domain) => 
+                domain.name === "ethereum" 
+                && domain.chainId == configs.chainId)
+            if (!networks){
+                throw new Error("Chain doesn't exist")
+            }
+
+            await retryTransaction(networks[0], configs.transactionHash)
 
         } catch (err) {
             if (err instanceof Error) {
