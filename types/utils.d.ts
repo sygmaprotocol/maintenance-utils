@@ -8,5 +8,5 @@ export declare function sendPauseTransactions(networks: Array<any>, wallets: Arr
 export declare function getEvent(bridge: Bridge, transactionReceipt: providers.TransactionReceipt, eventName: string): Promise<DepositEvent>;
 export declare function convertHexToString(hex: string): string;
 export declare function printEventData(emittedEvent: DepositEvent): void;
-export declare function getTransactionInfo(networks: Array<any>, depositHash: string): Promise<void>;
+export declare function getTransactionInfo(networks: Array<any>, transactionHash: string): Promise<void>;
 //# sourceMappingURL=utils.d.ts.map

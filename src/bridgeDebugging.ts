@@ -14,7 +14,7 @@ program
         "-e, --environment <environment>", "Environment on which to debug"
     )
     .requiredOption(
-        "-d, --deposit <deposit>", "Deposit transaction on which to provide information"
+        "-txn, --transaction-hash <transactionHash>", "Transaction on which to provide information"
     )
     .requiredOption(
         "-cid, --chain-id <chainId>", "Chain on which the transaction happened"
@@ -33,7 +33,7 @@ program
                 throw new Error("Chain doesn't exist")
             }
 
-            await getTransactionInfo(networks, configs.deposit)
+            await getTransactionInfo(networks, configs.transactionHash)
 
         } catch (err) {
             if (err instanceof Error) {

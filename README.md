@@ -13,5 +13,5 @@ Run with:
 node pause -pk "private-key" -m "mnemonic words" -e "environment"
 ```
 ```
-node debug -e "environment" -d "deposit hash" -cid "chain id" 
+node debug -e "environment" -txn "transaction hash" -cid "chain id" 
 ```

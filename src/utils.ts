@@ -104,14 +104,14 @@ export function printEventData(emittedEvent: DepositEvent){
   }
 }
 
-export async function getTransactionInfo(networks: Array<any>, depositHash: string) {
+export async function getTransactionInfo(networks: Array<any>, transactionHash: string) {
 
   const rpc = chainIdToRpc[networks[0].chainId as keyof typeof chainIdToRpc];
   const provider = new providers.JsonRpcProvider(rpc)
 
-  const transactionReceipt = await provider.getTransactionReceipt(depositHash);
+  const transactionReceipt = await provider.getTransactionReceipt(transactionHash);
   if (!transactionReceipt){
-    throw new Error("Error while getting transaction receipt using deposit hash.")
+    throw new Error("Error while getting transaction receipt using hash.")
   }
 
   const bridge = Bridge__factory.connect(networks[0].bridge, provider);
