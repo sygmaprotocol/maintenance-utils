@@ -49,7 +49,7 @@ export async function sendPauseTransactions(networks: Array<any>, wallets: Array
   return receipts;
 } 
 
-export async function getEvents(bridge: Bridge, transactionReceipt: providers.TransactionReceipt, eventName: string){
+export async function getEvent(bridge: Bridge, transactionReceipt: providers.TransactionReceipt, eventName: string){
   let filter; 
 
   switch (eventName.toLowerCase()){
@@ -67,7 +67,7 @@ export async function getEvents(bridge: Bridge, transactionReceipt: providers.Tr
   }
 
   const events = await bridge.queryFilter(filter, transactionReceipt.blockNumber, transactionReceipt.blockNumber);
-  return events;
+  return events[0];
 }
 
 export function convertHexToString(hex: string) {
@@ -116,18 +116,18 @@ export async function getTransactionInfo(networks: Array<any>, depositHash: stri
 
   const bridge = Bridge__factory.connect(networks[0].bridge, provider);
 
-  let events: DepositEvent[] = []
+  let event: any; 
   
   for (let eventName of possibleEvents){
-    events = await getEvents(bridge, transactionReceipt, eventName)
-    if (events.length != 0){
+    event = await getEvent(bridge, transactionReceipt, eventName)
+    if (event != undefined){
       break; 
     }
   }
 
-  if (events.length == 0){
+  if (event == undefined){
     throw new Error("Error while fetching event data")
   }
 
-  printEventData(events[0]);
+  printEventData(event);
 }
