@@ -53,13 +53,13 @@ export async function getEvents(bridge: Bridge, transactionReceipt: providers.Tr
   let filter; 
 
   switch (eventName.toLowerCase()){
-    case "deposit": 
+    case possibleEvents[0]: 
       filter = bridge.filters.Deposit(null, null, null, null, null, null);
       break;
-    case "proposalexecution":
+    case possibleEvents[1]:
       filter = bridge.filters.ProposalExecution(null, null, null, null);
       break;
-    case "failedhandlerexecution":
+    case possibleEvents[2]:
       filter = bridge.filters.FailedHandlerExecution(null,null,null)
       break;
     default: 
@@ -72,8 +72,8 @@ export async function getEvents(bridge: Bridge, transactionReceipt: providers.Tr
 
 export function convertHexToString(hex: string) {
   var str = '';
-  for (var i = 2; i < hex.length; i += 2) {
-      var v = parseInt(hex.substring(i-2, i), 16);
+  for (var i = 0; i < hex.length; i += 2) {
+      var v = parseInt(hex.substring(i, i+2), 16);
       if (v) str += String.fromCharCode(v);
   }
   return str;
