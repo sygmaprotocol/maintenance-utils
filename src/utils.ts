@@ -145,6 +145,6 @@ export async function retryTransaction(network: EthereumConfig | SubstrateConfig
 
   bridge.retry(transactionHash, {gasLimit: 5000000});
 
-  console.log(`Function with transaction hash ${transactionHash} retried on bridge ${bridge.address}`);
+  console.log(`Transaction with hash ${transactionHash} retried on bridge ${bridge.address}`);
 
 }
