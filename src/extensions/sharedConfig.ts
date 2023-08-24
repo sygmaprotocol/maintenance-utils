@@ -10,7 +10,7 @@ module.exports = (toolbox: GluegunToolbox) => {
     const result: { env: Environment } = await prompt.ask({
       type: 'select',
       name: 'env',
-      message: 'On which environment do you want to pause bridge instances',
+      message: "Which environment's shared config would you like to retrieve?",
       choices: Object.keys(Environment),
     })
 
