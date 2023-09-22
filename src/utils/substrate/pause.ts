@@ -2,7 +2,6 @@ import { SubstrateConfig } from '@buildwithsygma/sygma-sdk-core'
 import { KeyringPair } from '@polkadot/keyring/types'
 import type { AccountInfo } from '@polkadot/types/interfaces'
 import { RpcEndpoints } from '../../types'
-import { EVM_DOMAIN_ID } from '../../constants'
 import { initSubstrateProvider } from './index'
 
 export async function sendSubstratePauseTransaction(
@@ -23,9 +22,7 @@ export async function sendSubstratePauseTransaction(
         console.log(`Submitting extrinsic to pause bridge, nonce: ${nonce}`)
 
         const unsub = await api.tx.sygmaBridge
-          // this is temp since we have only one route,
-          // we should add extrinsic that pauses across all domains
-          .pauseBridge(EVM_DOMAIN_ID)
+          .pauseAllBridges()
           .signAndSend(sudo, { nonce: nonce, era: 0 }, (result) => {
             console.log(`Current status is ${result.status.toString()}`)
             if (result.status.isInBlock) {
