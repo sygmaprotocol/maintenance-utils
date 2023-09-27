@@ -2,9 +2,10 @@
 
 Plugins allow you to add features to maintenance-utils, such as commands and
 extensions to the `toolbox` object that provides the majority of the functionality
-used by maintenance-utils.
+used by maintenance-utils. Examples on how to do this can be found in the
+[gluegun documentation](https://github.com/infinitered/gluegun/tree/master/docs).
 
-Creating a maintenance-utils plugin is easy. Just create a repo with two folders:
+Here we'll show a simple example how to add a `command` and `extension`. Just create a repo with two folders:
 
 ```
 commands/
