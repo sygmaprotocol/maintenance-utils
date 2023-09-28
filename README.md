@@ -4,8 +4,10 @@ A CLI for maintenance-utils.
 
 ## How to run the maintenance-utils CLI
 
+* run `yarn install` - to install all dependecies
 * populate `rpcEndpoints.json` with your supported networks
-* run `yarn build` - this will generate a executable file
+* run `yarn build` - to update execution file
+* run `./bin/maintenance-utils <command> <subcommand>`  - to execute a command
 
 ## Commands
 
