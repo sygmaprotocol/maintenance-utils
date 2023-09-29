@@ -1,5 +1,6 @@
 import { EthereumConfig } from '@buildwithsygma/sygma-sdk-core'
 import { Wallet } from 'ethers'
+import { print } from 'gluegun'
 import { RpcEndpoints } from '../../types'
 import { EVM_BLOCK_CONFIRMATIONS } from '../../constants'
 import { initEvmBridgeInstance } from '.'
@@ -21,17 +22,17 @@ export async function sendEvmPauseTransactions(
         const tx = await bridgeInstance.adminPauseTransfers({
           from: wallet.address,
         })
-        console.log(
+        print.info(
           `Transaction sent, waiting to for ${EVM_BLOCK_CONFIRMATIONS} block confirmations, transaction hash: ${tx.hash}`
         )
         const txReceipt = await tx.wait(EVM_BLOCK_CONFIRMATIONS)
         if (txReceipt) {
-          console.log(
+          print.success(
             `Successfully paused bridge on network with chainId ${tx.chainId}, bridge address: ${bridgeInstance.address}`
           )
         }
       } catch (err) {
-        console.error(
+        print.error(
           `Failed to pause bridge because of: ${(err as Error).message}`
         )
       }
