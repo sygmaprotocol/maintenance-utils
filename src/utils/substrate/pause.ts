@@ -4,7 +4,7 @@ import type { AccountInfo } from '@polkadot/types/interfaces'
 import { RpcEndpoints } from '../../types'
 import { initSubstrateProvider } from './index'
 
-export async function sendSubstratePauseTransaction(
+export async function sendSubstratePauseTransactions(
   substrateConfigs: Array<SubstrateConfig>,
   rpcEndpoints: RpcEndpoints,
   sudo: KeyringPair,

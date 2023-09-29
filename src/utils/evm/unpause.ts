@@ -4,7 +4,7 @@ import { RpcEndpoints } from '../../types'
 import { EVM_BLOCK_CONFIRMATIONS } from '../../constants'
 import { initEvmBridgeInstance } from '.'
 
-export async function sendEvmUnpauseTransaction(
+export async function sendEvmUnpauseTransactions(
   ethereumConfigs: Array<EthereumConfig>,
   rpcEndpoints: RpcEndpoints,
   wallet: Wallet
