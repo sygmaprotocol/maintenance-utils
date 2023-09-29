@@ -23,6 +23,7 @@
     "target": "es2020",
     "declaration": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
     "declarationDir": "build/types"
   },
   "include": [
