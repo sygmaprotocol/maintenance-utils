@@ -19,7 +19,6 @@ export async function sendEvmUnpauseTransactions(
 
       try {
         const tx = await bridgeInstance.adminUnpauseTransfers({
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           from: wallet.address,
         })
         console.log(
