@@ -39,10 +39,9 @@ module.exports = {
 
     await sendEvmRetryTransaction(
       matchingDomain as unknown as EthereumConfig,
-      rpcEndpoints,
+      rpcEndpoints[networkPrompt.chainId],
       initializedWallets[Network.EVM] as Wallet,
-      transactionPrompt.txHash,
-      networkPrompt.chainId
+      transactionPrompt.txHash
     )
   },
 }

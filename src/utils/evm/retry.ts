@@ -1,20 +1,18 @@
 import { EthereumConfig } from '@buildwithsygma/sygma-sdk-core'
 import { Wallet } from 'ethers'
 import { print } from 'gluegun'
-import { RpcEndpoints } from '../../types'
 import { EVM_BLOCK_CONFIRMATIONS } from '../../constants'
 import { initEvmBridgeInstance } from '.'
 
 export async function sendEvmRetryTransaction(
-  ethereumConfig: EthereumConfig,
-  rpcEndpoints: RpcEndpoints,
+  targetEvmDomain: EthereumConfig,
+  rpcEndpoint: string,
   wallet: Wallet,
-  txHash: string,
-  chainId: string
+  txHash: string
 ): Promise<void> {
   const bridgeInstance = initEvmBridgeInstance(
-    rpcEndpoints[chainId],
-    ethereumConfig,
+    rpcEndpoint,
+    targetEvmDomain,
     wallet
   )
 
