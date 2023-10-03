@@ -8,8 +8,8 @@ import { Wallet } from 'ethers'
 import { KeyringPair } from '@polkadot/keyring/types'
 import { InitializedWallets, RpcEndpoints } from '../../types'
 import {
-  sendEvmUnpauseTransaction,
-  sendSubstrateUnpauseTransaction,
+  sendEvmUnpauseTransactions,
+  sendSubstrateUnpauseTransactions,
 } from '../../utils'
 
 module.exports = {
@@ -36,16 +36,16 @@ module.exports = {
       'json'
     ) as RpcEndpoints
 
-    if (evmNetworks) {
-      await sendEvmUnpauseTransaction(
+    if (evmNetworks.length != 0) {
+      await sendEvmUnpauseTransactions(
         evmNetworks,
         rpcEndpoints,
         initializedWallets[Network.EVM] as Wallet
       )
     }
 
-    if (substrateNetworks) {
-      await sendSubstrateUnpauseTransaction(
+    if (substrateNetworks.length != 0) {
+      await sendSubstrateUnpauseTransactions(
         substrateNetworks,
         rpcEndpoints,
         initializedWallets[Network.SUBSTRATE] as unknown as KeyringPair,

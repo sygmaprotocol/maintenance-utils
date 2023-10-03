@@ -8,8 +8,8 @@ import {
 import { Wallet } from 'ethers'
 import { InitializedWallets, RpcEndpoints } from '../../types'
 import {
-  sendEvmPauseTransaction,
-  sendSubstratePauseTransaction,
+  sendEvmPauseTransactions,
+  sendSubstratePauseTransactions,
 } from '../../utils'
 
 module.exports = {
@@ -36,16 +36,16 @@ module.exports = {
       'json'
     ) as RpcEndpoints
 
-    if (evmNetworks) {
-      await sendEvmPauseTransaction(
+    if (evmNetworks.length != 0) {
+      await sendEvmPauseTransactions(
         evmNetworks,
         rpcEndpoints,
         initializedWallets[Network.EVM] as Wallet
       )
     }
 
-    if (substrateNetworks) {
-      await sendSubstratePauseTransaction(
+    if (substrateNetworks.length != 0) {
+      await sendSubstratePauseTransactions(
         substrateNetworks,
         rpcEndpoints,
         initializedWallets[Network.SUBSTRATE] as unknown as KeyringPair,
