@@ -9,10 +9,11 @@ export async function sendEvmRetryTransaction(
   ethereumConfig: EthereumConfig,
   rpcEndpoints: RpcEndpoints,
   wallet: Wallet,
-  txHash: string
+  txHash: string,
+  chainId: string
 ): Promise<void> {
   const bridgeInstance = initEvmBridgeInstance(
-    rpcEndpoints[5],
+    rpcEndpoints[chainId],
     ethereumConfig,
     wallet
   )

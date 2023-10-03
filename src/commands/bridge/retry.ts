@@ -41,7 +41,8 @@ module.exports = {
       matchingDomain as unknown as EthereumConfig,
       rpcEndpoints,
       initializedWallets[Network.EVM] as Wallet,
-      transactionPrompt.txHash
+      transactionPrompt.txHash,
+      networkPrompt.chainId
     )
   },
 }
