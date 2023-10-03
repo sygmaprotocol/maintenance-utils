@@ -14,13 +14,11 @@ import { testEvmRoutes } from '../../utils/evm/test-routes'
 module.exports = {
   name: 'test-routes',
   run: async (toolbox: GluegunToolbox) => {
-    console.log("utest-routes sam")
     const { sharedConfig, wallet } = toolbox
 
     const rawConfig = await sharedConfig.fetchSharedConfig()
 
     const { env } = toolbox
-    console.log(env)
     const initializedWallets = (await wallet.initializeWallets(
       rawConfig
     )) as InitializedWallets
@@ -47,7 +45,6 @@ module.exports = {
       initializedWallets[Network.SUBSTRATE] as unknown as KeyringPair,
       env
     )
-      console.log("cekam")
     const substrateResult = await testSubstrateRoutes(
       evmNetworks,
       substrateNetworks,
