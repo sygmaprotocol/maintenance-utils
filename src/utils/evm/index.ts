@@ -4,6 +4,7 @@ import { Wallet, providers } from 'ethers'
 
 export * from './pause'
 export * from './unpause'
+export * from './retry'
 
 export function initEvmBridgeInstance(
   rpcEndpoint: string,

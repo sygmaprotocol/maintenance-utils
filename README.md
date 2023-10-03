@@ -13,3 +13,4 @@ A CLI for maintenance-utils.
 
 `bridge pause` - pauses all bridge instances across the selected network
 `bridge unpause` - unpauses all bridge instances across the selected network
+`bridge retry` - retries a failed transaction
