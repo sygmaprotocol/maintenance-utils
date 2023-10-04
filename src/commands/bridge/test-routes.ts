@@ -1,5 +1,5 @@
 import { KeyringPair } from '@polkadot/keyring/types'
-import { GluegunToolbox, filesystem } from 'gluegun'
+import { GluegunToolbox, filesystem, print } from 'gluegun'
 import {
   EthereumConfig,
   Network,
@@ -54,7 +54,6 @@ module.exports = {
       env
     )
 
-    console.log(evmResult,
-      substrateResult)
+    print.info(evmResult + substrateResult)
   },
 }

@@ -6,6 +6,7 @@ import { RpcEndpoints } from '../../types'
 import { KeyringPair } from '@polkadot/keyring/types'
 import { initSubstrateProvider } from '.'
 import { fetchTokenAmount, waitUntilBridgedFungibleEvm } from '../helpers'
+import { print } from 'gluegun'
 
 export async function testSubstrateRoutes(
   ethereumConfigs: Array<EthereumConfig>,
@@ -60,14 +61,14 @@ export async function testSubstrateRoutes(
                 const unsub = await transferTx.signAndSend(
                   substrateWallet.address,
                   ({ status }) => {
-                    console.log(`Current status is ${status.toString()}`)
+                    print.debug(`Current status is ${status.toString()}`)
 
                     if (status.isInBlock) {
-                      console.log(
+                      print.debug(
                         `Transaction included at blockHash ${status.asInBlock.toString()}`
                       )
                     } else if (status.isFinalized) {
-                      console.log(
+                      print.debug(
                         `Transaction finalized at blockHash ${status.asFinalized.toString()}`
                       )
 

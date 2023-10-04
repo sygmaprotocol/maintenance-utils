@@ -8,6 +8,7 @@ import { Storage__factory } from '../Contracts'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import { AccountInfo } from '@polkadot/types/interfaces'
 import { LoggingData, fetchTokenAmount, sleep, waitUntilBridgedFungibleEvm } from '../helpers'
+import { print } from 'gluegun'
 
 const executionContractAddresses = {
   EXECUTE_CONTRACT_ADDRESS_1:
@@ -26,23 +27,24 @@ export async function testEvmRoutes(
   environment: Environment,
 ): Promise<string> {
   let result = ""
-  try {
-    for (const network of ethereumConfigs) {
-      const sourceProvider = new providers.JsonRpcProvider(rpcEndpoints[network.chainId])
-      evmWallet = new Wallet(evmWallet.privateKey, sourceProvider)
-      const functionCalls = [] as any
+  for (const network of ethereumConfigs) {
+    const sourceProvider = new providers.JsonRpcProvider(rpcEndpoints[network.chainId])
+    evmWallet = new Wallet(evmWallet.privateKey, sourceProvider)
+    const functionCalls = [] as any
 
-      // EVM -> EVM transfer
-      for (const resource of network.resources) {
-        for (const destinationDomain of ethereumConfigs) {
+    // EVM -> EVM transfer
+    for (const resource of network.resources) {
+      for (const destinationDomain of ethereumConfigs) {
+        const loggingData = {
+          resourceId: resource.resourceId,
+          sourceDomainId: network.id,
+          sourceDomainName: network.name,
+          destinationDomainId: destinationDomain.id,
+          destinationDomainName: destinationDomain.name
+        }
+        try {
           const destinationProvider = new providers.JsonRpcProvider(rpcEndpoints[destinationDomain.chainId])
-          const loggingData = {
-            resourceId: resource.resourceId,
-            sourceDomainId: network.id,
-            sourceDomainName: network.name,
-            destinationDomainId: destinationDomain.id,
-            destinationDomainName: destinationDomain.name
-          }
+
           if (destinationDomain.id == network.id) {
             continue
           }
@@ -105,10 +107,6 @@ export async function testEvmRoutes(
 
                   break
                 case ResourceType.PERMISSIONLESS_GENERIC:
-                  // hack for cronos and base (dont send GMP to cronos and base)
-                  if (network.id > 3 || destinationDomain.id > 3) {
-                    continue
-                  }
                   const messageTransfer = new EVMGenericMessageTransfer()
 
                   await messageTransfer.init(
@@ -158,33 +156,39 @@ export async function testEvmRoutes(
                   ))
                   break
                 case ResourceType.NON_FUNGIBLE:
-                  console.log("not implemented for type: " + ResourceType.NON_FUNGIBLE);
+                  print.warning("not implemented for type: " + ResourceType.NON_FUNGIBLE);
                   break;
                 case ResourceType.PERMISSIONED_GENERIC:
-                  console.log(
+                  print.warning(
                     'not implemented for type: ' + ResourceType.NON_FUNGIBLE
                   )
                   break
                 default:
-                  console.log(`INVALID RESOURCE TYPE`)
+                  print.error(`INVALID RESOURCE TYPE`)
               }
             }
           }
-        }
 
-        // EVM -> SUBSTRATE
-        for (const destinationDomain of SubstrateConfig) {
+        } catch (err) {
+          print.error(err)
+          result += `\n resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED \n`
+        }
+      }
+
+      // EVM -> SUBSTRATE
+      for (const destinationDomain of SubstrateConfig) {
+        const loggingData = {
+          resourceId: resource.resourceId,
+          sourceDomainId: network.id,
+          sourceDomainName: network.name,
+          destinationDomainId: destinationDomain.id,
+          destinationDomainName: destinationDomain.name
+        }
+        try {
           const destinationProvider = new WsProvider(rpcEndpoints[destinationDomain.chainId])
           const api = await ApiPromise.create({
             provider: destinationProvider
           })
-          const loggingData = {
-            resourceId: resource.resourceId,
-            sourceDomainId: network.id,
-            sourceDomainName: network.name,
-            destinationDomainId: destinationDomain.id,
-            destinationDomainName: destinationDomain.name
-          }
           for (const destinationResource of destinationDomain.resources as unknown as Array<EvmResource>) {
             if (destinationResource.resourceId === resource.resourceId) {
               const assetTransfer = new EVMAssetTransfer()
@@ -238,13 +242,13 @@ export async function testEvmRoutes(
               ))
             }
           }
+        } catch (err) {
+          print.error(err)
+          result += `\n resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED \n`
         }
       }
-      result += (await Promise.all(functionCalls)).join("\n")
     }
-
-  } catch (err) {
-    console.log(err)
+    result += (await Promise.all(functionCalls)).join("\n")
   }
   return result
 }
@@ -282,7 +286,7 @@ const waitUntilBridgedGenericEvm = async (
         depositor
       )
       if (!valueAfter.eq(valueBefore)) {
-        console.log('Transaction successfully bridged.', loggingData)
+        print.info('Transaction successfully bridged.' + loggingData)
         result = `resource ${loggingData.resourceId} succesfully bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - PASSED`
         resolve(result);
         return;
@@ -290,7 +294,7 @@ const waitUntilBridgedGenericEvm = async (
       i++
       if (i > attempts) {
         // transaction should have been bridged already
-        console.log('transaction is taking too much time to bridge!', loggingData)
+        print.info('transaction is taking too much time to bridge!' + loggingData)
         result = `resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED`
         resolve(result);
         return;
@@ -317,7 +321,7 @@ const waitUntilBridgedFungibleSubstrate = async (
         await api.query.system.account<AccountInfo>(account)
       ).data.free.toHuman()
       if (valueAfter !== valueBefore) {
-        console.log('Transaction successfully bridged.', loggingData)
+        print.info('Transaction successfully bridged.' + loggingData)
         result = `resource ${loggingData.resourceId} succesfully bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - PASSED`
         resolve(result);
         return;
@@ -325,7 +329,7 @@ const waitUntilBridgedFungibleSubstrate = async (
       i++
       if (i > attempts) {
         // transaction should have been bridged already
-        console.log('transaction is taking too much time to bridge!', loggingData)
+        print.info('transaction is taking too much time to bridge!' + loggingData)
         result = `resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED`
         resolve(result);
         return;
