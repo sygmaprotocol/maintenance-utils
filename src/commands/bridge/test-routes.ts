@@ -9,7 +9,8 @@ import { Wallet } from 'ethers'
 import { InitializedWallets, RpcEndpoints } from '../../types'
 
 import { testSubstrateRoutes } from '../../utils/substrate/test-routes'
-import { testEvmRoutes } from '../../utils/evm/test-routes'
+import { testEvmToEvmRoutes } from '../../utils/evm/testEVMToEVMRoutes'
+import { testEvmToSubstrateRoutes } from '../../utils/evm/testEVMToSubstrateRoutes'
 
 module.exports = {
   name: 'test-routes',
@@ -37,7 +38,13 @@ module.exports = {
     ) as RpcEndpoints
 
 
-    const evmResult = await testEvmRoutes(
+    const evmToEvmResult = await testEvmToEvmRoutes(
+      evmNetworks,
+      rpcEndpoints,
+      initializedWallets[Network.EVM] as Wallet,
+      env
+    )
+    const evmToSubstrateResult = await testEvmToSubstrateRoutes(
       evmNetworks,
       substrateNetworks,
       rpcEndpoints,
@@ -54,6 +61,6 @@ module.exports = {
       env
     )
 
-    print.info(evmResult + substrateResult)
+    print.info(evmToEvmResult + evmToSubstrateResult + substrateResult)
   },
 }

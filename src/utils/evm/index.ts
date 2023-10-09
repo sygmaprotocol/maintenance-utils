@@ -4,7 +4,9 @@ import { Wallet, providers } from 'ethers'
 
 export * from './pause'
 export * from './unpause'
-export * from './test-routes'
+export * from './testEVMToEVMRoutes'
+export * from './testEVMToSubstrateRoutes'
+
 export * from './retry'
 
 export function initEvmBridgeInstance(

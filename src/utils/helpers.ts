@@ -1,5 +1,6 @@
 import { BigNumber, Contract, providers } from "ethers"
 import { abi as erc20Abi } from '@openzeppelin/contracts/build/contracts/ERC20.json'
+import { print } from "gluegun"
 
 export async function fetchTokenAmount(
   provider: providers.Provider,
@@ -46,7 +47,7 @@ export const waitUntilBridgedFungibleEvm = async (
       )
 
       if (!contractValueAfter.eq(valueBefore)) {
-        console.log('Transaction successfully bridged.', loggingData)
+        console.log('Transaction successfully bridged.', JSON.stringify(loggingData))
         result = `resource ${loggingData.resourceId} succesfully bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - PASSED`
         resolve(result);
         return;
@@ -54,7 +55,7 @@ export const waitUntilBridgedFungibleEvm = async (
       i++
       if (i > attempts) {
         // transaction should have been bridged already
-        console.log('transaction is taking too much time to bridge!', loggingData)
+        print.info('transaction is taking too much time to bridge!' + JSON.stringify(loggingData))
         result = `resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED`
         resolve(result);
         return;
