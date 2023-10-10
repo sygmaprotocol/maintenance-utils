@@ -8,6 +8,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api'
 import { AccountInfo } from '@polkadot/types/interfaces'
 import { LoggingData, sleep } from '../helpers'
 import { print } from 'gluegun'
+const DEPOSIT_AMOUNT = '500000000000'
 
 export async function testEvmToSubstrateRoutes(
   ethereumConfigs: Array<EthereumConfig>,
@@ -51,7 +52,7 @@ export async function testEvmToSubstrateRoutes(
                 destinationDomain.chainId,
                 substrateWallet.address,
                 resource.resourceId,
-                '500000000000'
+                DEPOSIT_AMOUNT
               )
 
               const fee = await assetTransfer.getFee(transfer)

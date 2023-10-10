@@ -7,6 +7,7 @@ import { KeyringPair } from '@polkadot/keyring/types'
 import { initSubstrateProvider } from '.'
 import { fetchTokenAmount, waitUntilBridgedFungibleEvm } from '../helpers'
 import { print } from 'gluegun'
+const DEPOSIT_AMOUNT = '500000000000'
 
 export async function testSubstrateRoutes(
   ethereumConfigs: Array<EthereumConfig>,
@@ -43,7 +44,7 @@ export async function testSubstrateRoutes(
                   destinationDomain.chainId,
                   await evmWallet.getAddress(),
                   resource.resourceId,
-                  '5000000000000'
+                  DEPOSIT_AMOUNT
                 )
 
                 const fee = await assetTransfer.getFee(transfer)

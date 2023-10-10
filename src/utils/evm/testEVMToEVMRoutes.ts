@@ -13,6 +13,7 @@ const executionContractAddresses = {
   EXECUTE_CONTRACT_ADDRESS_2:
     '0x0e963aEe445EDC19034e9938570E5E7BE4Ee19Cd'
 }
+const DEPOSIT_AMOUNT = '500000000000'
 const EXECUTE_FUNCTION_SIGNATURE = '0xa271ced2'
 const MAX_FEE = '3000000'
 export async function testEvmToEvmRoutes(
@@ -118,7 +119,7 @@ async function makeFungibleTransfer(sourceProvider: providers.JsonRpcProvider, e
     destinationDomain.chainId,
     await evmWallet.getAddress(),
     resource.resourceId,
-    '500000000000'
+    DEPOSIT_AMOUNT
   )
 
   const fee = await assetTransfer.getFee(transfer)

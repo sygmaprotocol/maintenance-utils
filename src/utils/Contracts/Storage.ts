@@ -38,8 +38,6 @@ export interface StorageInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "retrieve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "store", data: BytesLike): Result;
-
-  events: {};
 }
 
 export interface Storage extends BaseContract {
@@ -98,8 +96,6 @@ export interface Storage extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
   };
-
-  filters: {};
 
   estimateGas: {
     retrieve(depositor: string, overrides?: CallOverrides): Promise<BigNumber>;
