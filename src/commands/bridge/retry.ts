@@ -12,7 +12,7 @@ module.exports = {
     const rawConfig = await sharedConfig.fetchSharedConfig()
 
     const initializedWallets = (await wallet.initializeWallets(
-      rawConfig
+      rawConfig.domains
     )) as InitializedWallets
 
     const networkPrompt: { chainId: string } = await prompt.ask({
