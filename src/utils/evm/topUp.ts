@@ -19,7 +19,7 @@ export async function topUpEVMBalance(
           console.log(
             `Initiated relayer ${relayer.address} top up on network with chainId ${domain.chainId}`
           )
-          const relayerBalance = await checkRelayerBalance(provider, relayer)
+          const relayerBalance = await getRelayerBalance(provider, relayer)
           if (
             BigNumber.from(relayerBalance).gt(
               utils.parseEther(domain.nativeTokenMinBalance)
@@ -58,7 +58,7 @@ export async function topUpEVMBalance(
   )
 }
 
-export async function checkRelayerBalance(
+export async function getRelayerBalance(
   provider: providers.JsonRpcProvider,
   relayer: { address: string; topic: string }
 ): Promise<string> {
