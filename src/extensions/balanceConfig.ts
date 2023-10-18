@@ -13,8 +13,7 @@ module.exports = (toolbox: GluegunToolbox) => {
     })
 
     const api = http.create({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      baseURL: BALANCE_CONFIG_URL[result.env],
+      baseURL: BALANCE_CONFIG_URL[result.env] as string,
     })
     BALANCE_CONFIG_URL[result.env]
     /**

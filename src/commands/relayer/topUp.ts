@@ -2,7 +2,7 @@ import { GluegunToolbox, filesystem } from 'gluegun'
 import { Network } from '@buildwithsygma/sygma-sdk-core'
 import { Wallet } from 'ethers'
 import { InitializedWallets, RpcEndpoints } from '../../types'
-import { checkEVMBalanceAndTopUp } from '../../utils'
+import { topUpEVMBalance } from '../../utils'
 
 module.exports = {
   name: 'top-up',
@@ -24,7 +24,7 @@ module.exports = {
       'json'
     ) as RpcEndpoints
 
-    await checkEVMBalanceAndTopUp(
+    await topUpEVMBalance(
       evmNetworks,
       rpcEndpoints,
       initializedWallets[Network.EVM] as Wallet

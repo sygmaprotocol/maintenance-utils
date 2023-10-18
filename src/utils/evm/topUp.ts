@@ -2,7 +2,7 @@ import { BigNumber, Wallet, providers, utils } from 'ethers'
 import { BalanceConfig, RpcEndpoints } from '../../types'
 import { EVM_BLOCK_CONFIRMATIONS } from '../../constants'
 
-export async function checkEVMBalanceAndTopUp(
+export async function topUpEVMBalance(
   balanceConfig: Array<BalanceConfig>,
   rpcEndpoints: RpcEndpoints,
   wallet: Wallet
@@ -19,9 +19,7 @@ export async function checkEVMBalanceAndTopUp(
           console.log(
             `Initiated relayer ${relayer.address} top up on network with chainId ${domain.chainId}`
           )
-          const relayerBalance = (
-            await provider.getBalance(relayer.address)
-          ).toString()
+          const relayerBalance = await checkRelayerBalance(provider, relayer)
           if (
             BigNumber.from(relayerBalance).gt(
               utils.parseEther(domain.nativeTokenMinBalance)
@@ -41,7 +39,7 @@ export async function checkEVMBalanceAndTopUp(
             )
           } else {
             console.log(
-              `Nothing to to up, relayer ${
+              `Nothing to top up, relayer ${
                 relayer.address
               } current balance is ${utils
                 .formatEther(relayerBalance)
@@ -58,4 +56,11 @@ export async function checkEVMBalanceAndTopUp(
       }
     })
   )
+}
+
+export async function checkRelayerBalance(
+  provider: providers.JsonRpcProvider,
+  relayer: { address: string; topic: string }
+): Promise<string> {
+  return (await provider.getBalance(relayer.address)).toString()
 }
