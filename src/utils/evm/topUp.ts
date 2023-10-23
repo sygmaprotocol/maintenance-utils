@@ -1,4 +1,5 @@
 import { BigNumber, Wallet, providers, utils } from 'ethers'
+import { print } from 'gluegun'
 import { BalanceConfig, RpcEndpoints } from '../../types'
 import { EVM_BLOCK_CONFIRMATIONS } from '../../constants'
 
@@ -16,7 +17,7 @@ export async function topUpEVMBalance(
 
       for (const relayer of domain.nativeBalanceData) {
         try {
-          console.log(
+          print.info(
             `Initiated relayer ${relayer.address} top up on network with chainId ${domain.chainId}`
           )
           const relayerBalance = await getRelayerBalance(provider, relayer)
@@ -34,11 +35,11 @@ export async function topUpEVMBalance(
               value: topUpAmount,
             })
             await receipt.wait(EVM_BLOCK_CONFIRMATIONS)
-            console.log(
+            print.success(
               `Successfully topped up relayer ${relayer.address} on network with chainId ${domain.chainId}`
             )
           } else {
-            console.log(
+            print.info(
               `Nothing to top up, relayer ${
                 relayer.address
               } current balance is ${utils
@@ -49,7 +50,7 @@ export async function topUpEVMBalance(
             )
           }
         } catch (err) {
-          console.error(
+          print.error(
             `Failed topping up relayer because of: ${(err as Error).message}`
           )
         }
