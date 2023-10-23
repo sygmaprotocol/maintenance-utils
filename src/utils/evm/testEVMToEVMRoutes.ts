@@ -220,7 +220,7 @@ const waitUntilBridgedGenericEvm = async (
       i++
       if (i > attempts) {
         // transaction should have been bridged already
-        print.info('transaction is taking too much time to bridge!' + JSON.stringify(loggingData))
+        print.info('Transaction is taking too much time to bridge!' + JSON.stringify(loggingData))
         result = `resource ${loggingData.resourceId} unable to bridged from domain ${loggingData.sourceDomainId}(${loggingData.sourceDomainName}) to domain ${loggingData.destinationDomainId}(${loggingData.destinationDomainName}) - FAILED \n`
         resolve(result);
         return;
