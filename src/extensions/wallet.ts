@@ -1,16 +1,20 @@
-import { Network, RawConfig } from '@buildwithsygma/sygma-sdk-core'
+import {
+  EthereumConfig,
+  Network,
+  SubstrateConfig,
+} from '@buildwithsygma/sygma-sdk-core'
 import { Wallet } from 'ethers'
 import { GluegunToolbox, prompt } from 'gluegun'
 import { Keyring } from '@polkadot/api'
-import { InitializedWallets } from '../types'
+import { InitializedWallets, BalanceConfig } from '../types'
 
 module.exports = (toolbox: GluegunToolbox) => {
   async function initializeWallets(
-    rawConfig: RawConfig
+    config: Array<EthereumConfig | SubstrateConfig | BalanceConfig>
   ): Promise<InitializedWallets> {
     // get only single unique network type values from config
     const networkTypes: string[] = Array.from(
-      new Set(rawConfig.domains.map((domain) => domain.type))
+      new Set(config.map((domain) => domain.type))
     )
 
     const wallets: InitializedWallets = {} as unknown as InitializedWallets

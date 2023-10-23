@@ -1,5 +1,6 @@
 import { GluegunToolbox, build } from 'gluegun'
 import { Options } from 'gluegun/build/types/domain/options'
+import 'dotenv/config'
 
 /**
  * Create the cli and kick it off

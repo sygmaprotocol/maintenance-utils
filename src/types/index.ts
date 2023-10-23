@@ -7,3 +7,12 @@ export type RpcEndpoints = {
 }
 
 export type InitializedWallets = { [key in Network]: Wallet | KeyringPair }
+
+export type BalanceConfig = {
+  id: number
+  chainId: number
+  url: string
+  type: Network
+  nativeTokenMinBalance: string
+  nativeBalanceData: Array<{ address: string; topic: string }>
+}

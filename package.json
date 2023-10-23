@@ -31,6 +31,7 @@
     "@buildwithsygma/sygma-contracts": "^2.3.0",
     "@polkadot/api": "^10.9.1",
     "@polkadot/keyring": "^12.3.2",
+    "dotenv": "^16.3.1",
     "gluegun": "^5.1.2"
   },
   "devDependencies": {
@@ -46,7 +47,7 @@
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "ethers": "^5",
+    "ethers": "5.7.2",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
