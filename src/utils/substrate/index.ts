@@ -4,7 +4,7 @@ import { RpcEndpoints } from '../../types'
 
 export * from './pause'
 export * from './unpause'
-export * from './test-routes'
+export * from './testSubstrateToEVMRoutes'
 
 export async function initSubstrateProvider(
   rpcEndpoints: RpcEndpoints,

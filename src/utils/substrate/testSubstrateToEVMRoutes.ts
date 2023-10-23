@@ -9,7 +9,7 @@ import { fetchTokenAmount, waitUntilBridgedFungibleEvm } from '../helpers'
 import { print } from 'gluegun'
 const DEPOSIT_AMOUNT = '500000000000'
 
-export async function testSubstrateRoutes(
+export async function testSubstrateToEvmRoutes(
   ethereumConfigs: Array<EthereumConfig>,
   SubstrateConfig: Array<SubstrateConfig>,
   rpcEndpoints: RpcEndpoints,

@@ -7,20 +7,19 @@ import { Storage__factory } from '../Contracts'
 import { LoggingData, fetchTokenAmount, sleep, waitUntilBridgedFungibleEvm } from '../helpers'
 import { print } from 'gluegun'
 
-const executionContractAddresses = {
-  EXECUTE_CONTRACT_ADDRESS_1:
-    '0xdFA5621F95675D37248bAc9e536Aab4D86766663',
-  EXECUTE_CONTRACT_ADDRESS_2:
-    '0x0e963aEe445EDC19034e9938570E5E7BE4Ee19Cd'
+type ExecutionContractAddress = {
+  [key: string]: string
 }
-const DEPOSIT_AMOUNT = '500000000000'
+
 const EXECUTE_FUNCTION_SIGNATURE = '0xa271ced2'
-const MAX_FEE = '3000000'
+const MAX_FEE = '3000000' // for GMP
 export async function testEvmToEvmRoutes(
   ethereumConfigs: Array<EthereumConfig>,
   rpcEndpoints: RpcEndpoints,
   evmWallet: Wallet,
   environment: Environment,
+  depositAmount: string,
+  executionContractAddress: ExecutionContractAddress
 ): Promise<string> {
   let result = ""
   for (const network of ethereumConfigs) {
@@ -53,7 +52,7 @@ export async function testEvmToEvmRoutes(
                     await evmWallet.getAddress(),
                     destinationResource.address
                   )
-                  await makeFungibleTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource)
+                  await makeFungibleTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource, depositAmount)
 
                   functionCalls.push(waitUntilBridgedFungibleEvm(
                     loggingData,
@@ -65,18 +64,18 @@ export async function testEvmToEvmRoutes(
                   ))
                   break
                 case ResourceType.PERMISSIONLESS_GENERIC:
-                  if(executionContractAddresses[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`]) {
+                  if(executionContractAddress[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`]) {
                     const contractValueBefore = await fetchGenericContractValue(
-                      executionContractAddresses[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
+                      executionContractAddress[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
                       destinationProvider,
                       await evmWallet.getAddress()
                     )
-                    await makeGenericTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource)
+                    await makeGenericTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource, executionContractAddress)
                     functionCalls.push(waitUntilBridgedGenericEvm(
                       loggingData,
                       result,
                       contractValueBefore,
-                      executionContractAddresses[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
+                      executionContractAddress[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
                       destinationProvider,
                       await evmWallet.getAddress()
                     ))
@@ -107,7 +106,7 @@ export async function testEvmToEvmRoutes(
   return result
 }
 
-async function makeFungibleTransfer(sourceProvider: providers.JsonRpcProvider, environment: Environment, evmWallet: Wallet, destinationDomain: EthereumConfig, resource: Resource) {
+async function makeFungibleTransfer(sourceProvider: providers.JsonRpcProvider, environment: Environment, evmWallet: Wallet, destinationDomain: EthereumConfig, resource: Resource, depositAmount: string) {
   const assetTransfer = new EVMAssetTransfer()
   await assetTransfer.init(
     sourceProvider as providers.BaseProvider,
@@ -119,7 +118,7 @@ async function makeFungibleTransfer(sourceProvider: providers.JsonRpcProvider, e
     destinationDomain.chainId,
     await evmWallet.getAddress(),
     resource.resourceId,
-    DEPOSIT_AMOUNT
+    depositAmount
   )
 
   const fee = await assetTransfer.getFee(transfer)
@@ -146,7 +145,7 @@ async function makeFungibleTransfer(sourceProvider: providers.JsonRpcProvider, e
   )
 }
 
-async function makeGenericTransfer(sourceProvider: providers.JsonRpcProvider, environment: Environment, evmWallet: Wallet, destinationDomain: EthereumConfig, resource: Resource) {
+async function makeGenericTransfer(sourceProvider: providers.JsonRpcProvider, environment: Environment, evmWallet: Wallet, destinationDomain: EthereumConfig, resource: Resource, executionContractAddress: ExecutionContractAddress) {
   const messageTransfer = new EVMGenericMessageTransfer()
 
   await messageTransfer.init(
@@ -163,7 +162,7 @@ async function makeGenericTransfer(sourceProvider: providers.JsonRpcProvider, en
     await evmWallet.getAddress(),
     destinationDomain.chainId,
     resource.resourceId,
-    executionContractAddresses[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
+    executionContractAddress[`EXECUTE_CONTRACT_ADDRESS_${destinationDomain.id}`],
     EXECUTE_FUNCTION_SIGNATURE,
     EXECUTION_DATA,
     MAX_FEE

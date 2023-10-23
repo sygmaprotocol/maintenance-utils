@@ -8,14 +8,14 @@ import {
 import { Wallet } from 'ethers'
 import { InitializedWallets, RpcEndpoints } from '../../types'
 
-import { testSubstrateRoutes } from '../../utils/substrate/test-routes'
 import { testEvmToEvmRoutes } from '../../utils/evm/testEVMToEVMRoutes'
 import { testEvmToSubstrateRoutes } from '../../utils/evm/testEVMToSubstrateRoutes'
+import { testSubstrateToEvmRoutes } from '../../utils'
 
 module.exports = {
   name: 'test-routes',
   run: async (toolbox: GluegunToolbox) => {
-    const { sharedConfig, wallet } = toolbox
+    const { sharedConfig, wallet, depositAmount, path } = toolbox
 
     const rawConfig = await sharedConfig.fetchSharedConfig()
 
@@ -37,12 +37,21 @@ module.exports = {
       'json'
     ) as RpcEndpoints
 
+    let amount = await depositAmount.getDepositAmount()
+    const executionContractAddressesPath = await path.getGenericHandlerTestingContractAddresses()
+
+    const executionContractAddress = filesystem.read(
+      executionContractAddressesPath,
+      'json'
+    )
 
     const evmToEvmResult = await testEvmToEvmRoutes(
       evmNetworks,
       rpcEndpoints,
       initializedWallets[Network.EVM] as Wallet,
-      env
+      env,
+      amount,
+      executionContractAddress
     )
     const evmToSubstrateResult = await testEvmToSubstrateRoutes(
       evmNetworks,
@@ -52,7 +61,7 @@ module.exports = {
       initializedWallets[Network.SUBSTRATE] as unknown as KeyringPair,
       env
     )
-    const substrateResult = await testSubstrateRoutes(
+    const substrateResult = await testSubstrateToEvmRoutes(
       evmNetworks,
       substrateNetworks,
       rpcEndpoints,
