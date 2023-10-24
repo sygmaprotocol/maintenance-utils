@@ -4,6 +4,9 @@ import { Wallet, providers } from 'ethers'
 
 export * from './pause'
 export * from './unpause'
+export * from './testEVMToEVMRoutes'
+export * from './testEVMToSubstrateRoutes'
+
 export * from './retry'
 export * from './topUp'
 

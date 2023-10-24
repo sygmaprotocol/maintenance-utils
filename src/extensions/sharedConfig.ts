@@ -28,6 +28,7 @@ module.exports = (toolbox: GluegunToolbox) => {
     if (!ok) {
       throw new Error('Failed to fetch shared config.')
     }
+    toolbox.env = result.env
     return data as RawConfig
   }
   toolbox.sharedConfig = { fetchSharedConfig }

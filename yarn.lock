@@ -324,10 +324,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@buildwithsygma/sygma-contracts@2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@buildwithsygma/sygma-contracts/-/sygma-contracts-2.1.2.tgz#ee482e879e41c9f6112b448fcb368ad96ed3920a"
-  integrity sha512-xtLQrruabFSwant/HnwJw6387zhr5UAC7wCmb/U+Ge1b5s3aUx1s2iZ6zsqWVgauZ+WrHvCMDfdHMyyVElYrhg==
+"@buildwithsygma/sygma-contracts@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.npmjs.org/@buildwithsygma/sygma-contracts/-/sygma-contracts-2.4.1.tgz#e736179ce46e03f098672b1de50ed52f4db5b93f"
+  integrity sha512-L36BaGodBJ09oxMBxupUAr6A2VsJ5HDiKapx7kxXA8qBUgeyFzGnjO05uuhqmhXBtGKbZ0+0QMqy9r/AXg0FMQ==
   dependencies:
     "@openzeppelin/contracts" "^4.5.0"
     "@truffle/hdwallet-provider" "^2.0.14"
@@ -340,12 +340,12 @@
     "@openzeppelin/contracts" "^4.5.0"
     "@truffle/hdwallet-provider" "^2.0.14"
 
-"@buildwithsygma/sygma-sdk-core@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@buildwithsygma/sygma-sdk-core/-/sygma-sdk-core-2.1.0.tgz#182822b88a21bd6f878669a7be3ffc5d697aba3b"
-  integrity sha512-BIJuXO2s9YlcLbuNQ5q/38WmYiHU5xVzLyV3DDDDkT8KEo6CQJmNzYJ29dx+6zWyt25bq+IM7e4GBwBwkQRYsg==
+"@buildwithsygma/sygma-sdk-core@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/@buildwithsygma/sygma-sdk-core/-/sygma-sdk-core-2.3.0.tgz#43c4eb673299595d9a846d3d4eb61692363b7562"
+  integrity sha512-oFmTl/3MnJlrUF0gFXf9y31Re2Lu+YI7PXB3x4USFsAbTMR3F5aIqBg3Yb1hj12xyrQnLQNVQll11+q6GUB4rA==
   dependencies:
-    "@buildwithsygma/sygma-contracts" "2.1.2"
+    "@buildwithsygma/sygma-contracts" "2.4.1"
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/contracts" "^5.7.0"
@@ -971,7 +971,7 @@
 
 "@ethersproject/solidity@5.7.0":
   version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/solidity/-/solidity-5.7.0.tgz#5e9c911d8a2acce2a5ebb48a5e2e0af20b631cb8"
+  resolved "https://registry.npmjs.org/@ethersproject/solidity/-/solidity-5.7.0.tgz#5e9c911d8a2acce2a5ebb48a5e2e0af20b631cb8"
   integrity sha512-HmabMd2Dt/raavyaGukF4XxizWKhKQ24DoLtdNbBmNKUOPqwjsKQSdV9GQtj9CBEea9DlzETlVER1gYeXXBGaA==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
@@ -1040,7 +1040,7 @@
 
 "@ethersproject/units@5.7.0":
   version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/units/-/units-5.7.0.tgz#637b563d7e14f42deeee39245275d477aae1d8b1"
+  resolved "https://registry.npmjs.org/@ethersproject/units/-/units-5.7.0.tgz#637b563d7e14f42deeee39245275d477aae1d8b1"
   integrity sha512-pD3xLMy3SJu9kG5xDGI7+xhTEmGXlEqXU4OfNapmfnxLVY4EMSSRp7j1k7eezutBPH7RBN/7QPnwR7hzNlEFeg==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
@@ -1070,7 +1070,7 @@
 
 "@ethersproject/wallet@5.7.0":
   version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/wallet/-/wallet-5.7.0.tgz#4e5d0790d96fe21d61d38fb40324e6c7ef350b2d"
+  resolved "https://registry.npmjs.org/@ethersproject/wallet/-/wallet-5.7.0.tgz#4e5d0790d96fe21d61d38fb40324e6c7ef350b2d"
   integrity sha512-MhmXlJXEJFBFVKrDLB4ZdDzxcBxQ3rLyCkhNqVu3CDYvR97E+8r01UgrI+TI99Le+aYm/in/0vp86guJuM7FCA==
   dependencies:
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -1469,6 +1469,11 @@
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.9.2.tgz#1cb2d5e4d3360141a17dbc45094a8cad6aac16c1"
   integrity sha512-mO+y6JaqXjWeMh9glYVzVu8HYPGknAAnWyxTRhGeckOruyXQMNnlcW6w/Dx9ftLeIQk6N+ZJFuVmTwF7lEIFrg==
+
+"@openzeppelin/contracts@^4.9.3":
+  version "4.9.3"
+  resolved "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-4.9.3.tgz#00d7a8cf35a475b160b3f0293a6403c511099364"
+  integrity sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==
 
 "@polkadot/api-augment@10.7.2":
   version "10.7.2"
@@ -4698,7 +4703,7 @@ ethers@5.6.2:
 
 ethers@5.7.2:
   version "5.7.2"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
+  resolved "https://registry.npmjs.org/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
   dependencies:
     "@ethersproject/abi" "5.7.0"
