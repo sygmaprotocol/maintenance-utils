@@ -21,7 +21,7 @@ module.exports = {
 
     const { env } = toolbox
     const initializedWallets = (await wallet.initializeWallets(
-      rawConfig
+      rawConfig.domains
     )) as InitializedWallets
 
     const evmNetworks = rawConfig.domains.filter(

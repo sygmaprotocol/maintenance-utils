@@ -12,7 +12,7 @@ type ExecutionContractAddress = {
 }
 
 const EXECUTE_FUNCTION_SIGNATURE = '0xa271ced2'
-const MAX_FEE = '3000000' // for GMP
+const MAX_FEE = '500000' // for GMP
 export async function testEvmToEvmRoutes(
   ethereumConfigs: Array<EthereumConfig>,
   rpcEndpoints: RpcEndpoints,
@@ -52,6 +52,8 @@ export async function testEvmToEvmRoutes(
                     await evmWallet.getAddress(),
                     destinationResource.address
                   )
+
+                  print.info(`Transfer ${depositAmount} ${resource.symbol} from domainID: ${network.id} to domainID: ${destinationDomain.id}`)
                   await makeFungibleTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource, depositAmount)
 
                   functionCalls.push(waitUntilBridgedFungibleEvm(
@@ -70,7 +72,10 @@ export async function testEvmToEvmRoutes(
                       destinationProvider,
                       await evmWallet.getAddress()
                     )
+
+                    print.info(`Transfer generic message (resource:${resource.resourceId}) from ${network.id} to ${destinationDomain.id}`)
                     await makeGenericTransfer(sourceProvider, environment, evmWallet, destinationDomain, resource, executionContractAddress)
+                    
                     functionCalls.push(waitUntilBridgedGenericEvm(
                       loggingData,
                       result,

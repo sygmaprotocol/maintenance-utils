@@ -324,7 +324,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@buildwithsygma/sygma-contracts@2.4.1":
+"@buildwithsygma/sygma-contracts@2.4.1", "@buildwithsygma/sygma-contracts@^2.4.1":
   version "2.4.1"
   resolved "https://registry.npmjs.org/@buildwithsygma/sygma-contracts/-/sygma-contracts-2.4.1.tgz#e736179ce46e03f098672b1de50ed52f4db5b93f"
   integrity sha512-L36BaGodBJ09oxMBxupUAr6A2VsJ5HDiKapx7kxXA8qBUgeyFzGnjO05uuhqmhXBtGKbZ0+0QMqy9r/AXg0FMQ==
@@ -332,18 +332,10 @@
     "@openzeppelin/contracts" "^4.5.0"
     "@truffle/hdwallet-provider" "^2.0.14"
 
-"@buildwithsygma/sygma-contracts@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@buildwithsygma/sygma-contracts/-/sygma-contracts-2.3.0.tgz#b8d37b4110332bff6e96b182f4cedcb92925fca7"
-  integrity sha512-NeqPjtI3bKHPxqIHR1oIgeouEf5DBkVTsXkgblpfAbWgm63e1oqFzbzRQkpdpkZen87j9cBgkonBFicFQ7KNRw==
-  dependencies:
-    "@openzeppelin/contracts" "^4.5.0"
-    "@truffle/hdwallet-provider" "^2.0.14"
-
-"@buildwithsygma/sygma-sdk-core@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@buildwithsygma/sygma-sdk-core/-/sygma-sdk-core-2.3.0.tgz#43c4eb673299595d9a846d3d4eb61692363b7562"
-  integrity sha512-oFmTl/3MnJlrUF0gFXf9y31Re2Lu+YI7PXB3x4USFsAbTMR3F5aIqBg3Yb1hj12xyrQnLQNVQll11+q6GUB4rA==
+"@buildwithsygma/sygma-sdk-core@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.npmjs.org/@buildwithsygma/sygma-sdk-core/-/sygma-sdk-core-2.4.0.tgz#986ccdc800c6a51bfabf60d778de86e73e6a68dd"
+  integrity sha512-muDXzysxqehwapVTcdIgJKinr5LSOLtTMX1VuvOPvVrd3ohPgYVb1KDCgMQqMJYxoF01YTf/bQSapJrownwhkg==
   dependencies:
     "@buildwithsygma/sygma-contracts" "2.4.1"
     "@ethersproject/abi" "^5.7.0"
