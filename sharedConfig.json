@@ -1,0 +1,55 @@
+{
+  "domains": [
+    {
+      "id": 1,
+      "chainId": 5,
+      "name": "ethereum",
+      "type": "evm",
+      "bridge": "0x5cEA5130c49dCd262B9482E0A76eCE8b23Ae45Df",
+      "handlers": [
+        {
+          "type": "erc20",
+          "address": "0x7461F7023F017257039197615a2667dFEb7F21Cd"
+        },
+        {
+          "type": "erc721",
+          "address": "0xe938a6fB2D3a8B836Bec896e38919Ec42FB7089B"
+        },
+        {
+          "type": "permissionedGeneric",
+          "address": "0x25d2C5Fe1aa70c593e2090B3Dcecc5849676a303"
+        },
+        {
+          "type": "permissionlessGeneric",
+          "address": "0xd938c1053f834B2B6Ad7a7782d60aa00fBb49e46"
+        }
+      ],
+      "nativeTokenSymbol": "eth",
+      "nativeTokenFullName": "ether",
+      "nativeTokenDecimals": 18,
+      "blockConfirmations": 5,
+      "startBlock": 8987145,
+      "feeRouter": "0x860B8a9b84Be8f2bF98d6455699cae5dcecCf43a",
+      "feeHandlers": [
+        {
+          "address": "0x4828Fb7b41D5B4AC8428de2bbD0cb616Cd494973",
+          "type": "basic"
+        },
+        {
+          "address": "0x4828Fb7b41D5B4AC8428de2bbD0cb616Cd494973",
+          "type": "percentage"
+        }
+      ],
+      "resources": [
+        {
+          "resourceId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "type": "fungible",
+          "address": "0x3D151A97A446C9ea6893038e7C0db73466f3f3af",
+          "burnable": true,
+          "symbol": "ERC20TST",
+          "decimals": 18
+        }
+      ]
+    }
+  ]
+}

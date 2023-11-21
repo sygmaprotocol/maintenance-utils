@@ -1,4 +1,4 @@
-import { GluegunToolbox, prompt, http } from 'gluegun'
+import { GluegunToolbox, prompt, http, filesystem } from 'gluegun'
 import {
   ConfigUrl,
   RawConfig,
@@ -13,6 +13,14 @@ module.exports = (toolbox: GluegunToolbox) => {
       message: "Which environment's shared config would you like to retrieve?",
       choices: Object.keys(Environment),
     })
+
+    // if local environment selected, configure shared-config through sharedConfig.json
+    if(result.env.toLowerCase() == Environment.LOCAL) {
+      return filesystem.read(
+        'sharedConfig.json',
+        'json'
+      ) as RawConfig
+    }
 
     const api = http.create({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
