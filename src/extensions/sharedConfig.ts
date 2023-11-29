@@ -16,6 +16,7 @@ module.exports = (toolbox: GluegunToolbox) => {
 
     // if local environment selected, configure shared-config through sharedConfig.json
     if(result.env.toLowerCase() == Environment.LOCAL) {
+      toolbox.env = result.env
       return filesystem.read(
         'sharedConfig.json',
         'json'
