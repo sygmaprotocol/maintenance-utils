@@ -14,4 +14,5 @@ A CLI for maintenance-utils.
 `bridge pause` - pauses all bridge instances across the selected network
 `bridge unpause` - unpauses all bridge instances across the selected network
 `bridge retry` - retries a failed transaction
+`bridge test-routes` - test transfers for all defined domains and resources. If you want to test just specific routes, define domains in sharedConfig.json file.
 `relayer top-up` - tops upp all relayers balances that are under the `nativeTokenMinBalance`, the top amount can be adjusted with `RELAYER_TOP_UP_MULTIPLIER` env variable
